@@ -1,4 +1,7 @@
 {
+  "name": "Vadim Gaidukov",
+  "email": "vgaidukov@gmail.com",
+  "author": "Vadim Gaidukov <vgaidukov@gmail.com>",
   "devDependencies": {
     "eslint": "^8.23.0",
     "eslint-config-airbnb-base": "^15.0.0",
