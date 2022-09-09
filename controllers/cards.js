@@ -1,16 +1,16 @@
 const Card = require("../models/card");
 
-const getCards = (req, res) => {
+const getCards = (req, res, next) => {
   Card.find({})
     .then(cards => {
       res.send({ data: cards })
     })
     .catch(err => {
-      res.status(500).send({ message: `Произошла ошибка ${err}` })
+      next(err);
     });
 };
 
-const createCard = (req, res) => {
+const createCard = (req, res, next) => {
   req.body.owner = req.user._id;
   const { name, link, owner } = req.body;
   Card.create({
@@ -22,21 +22,21 @@ const createCard = (req, res) => {
       res.send(card);
     })
     .catch(err => {
-      res.status(500).send({ message: `Произошла ошибка ${err}` })
+      next(err);
     });
 };
 
-const deleteCard = (req, res) => {
+const deleteCard = (req, res, next) => {
   Card.findByIdAndRemove(req.params.cardId)
     .then((card) => {
       res.send({ data: card })
     })
     .catch(err => {
-      res.status(500).send({ message: `Произошла ошибка ${err}` })
+      next(err);
     });
 };
 
-const likeCard = (req, res) => {
+const likeCard = (req, res, next) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $addToSet: { likes: req.user._id } },
@@ -46,11 +46,11 @@ const likeCard = (req, res) => {
       res.send({ data: card })
     })
     .catch(err => {
-      res.status(500).send({ message: `Произошла ошибка ${err}` })
+      next(err);
     });
 };
 
-const dislikeCard = (req, res) => {
+const dislikeCard = (req, res, next) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: req.user._id } },
@@ -60,7 +60,7 @@ const dislikeCard = (req, res) => {
       res.send({ data: card })
     })
     .catch(err => {
-      res.status(500).send({ message: `Произошла ошибка ${err}` })
+      next(err);
     });
 };
 
