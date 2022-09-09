@@ -12,13 +12,11 @@ const getCards = (req, res) => {
 
 const createCard = (req, res) => {
   req.body.owner = req.user._id;
-  const { name, link, owner, likes, createdAt } = req.body;
+  const { name, link, owner } = req.body;
   Card.create({
     name,
     link,
-    owner,
-    likes,
-    createdAt
+    owner
   })
     .then((card) => {
       res.send(card);
@@ -38,8 +36,38 @@ const deleteCard = (req, res) => {
     });
 };
 
+const likeCard = (req, res) => {
+  Card.findByIdAndUpdate(
+    req.params.cardId,
+    { $addToSet: { likes: req.user._id } },
+    { new: true }
+  )
+    .then((card) => {
+      res.send({ data: card })
+    })
+    .catch(err => {
+      res.status(500).send({ message: `Произошла ошибка ${err}` })
+    });
+};
+
+const dislikeCard = (req, res) => {
+  Card.findByIdAndUpdate(
+    req.params.cardId,
+    { $pull: { likes: req.user._id } },
+    { new: true }
+  )
+    .then((card) => {
+      res.send({ data: card })
+    })
+    .catch(err => {
+      res.status(500).send({ message: `Произошла ошибка ${err}` })
+    });
+};
+
 module.exports = {
   getCards,
   createCard,
-  deleteCard
+  deleteCard,
+  likeCard,
+  dislikeCard
 };

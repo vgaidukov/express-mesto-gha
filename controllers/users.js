@@ -31,8 +31,33 @@ const createUser = (req, res) => {
     });
 };
 
+const setUserInfo = (req, res) => {
+  const { name, about } = req.body;
+  console.log(req.body);
+  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true })
+    .then((user) => {
+      res.send(user);
+    })
+    .catch(err => {
+      res.status(500).send({ message: `Произошла ошибка ${err}` })
+    });
+};
+
+const setAvatar = (req, res) => {
+  const { avatar } = req.body;
+  User.findByIdAndUpdate(req.user._id, { avatar }, { new: true })
+    .then((user) => {
+      res.send(user);
+    })
+    .catch(err => {
+      res.status(500).send({ message: `Произошла ошибка ${err}` })
+    });
+};
+
 module.exports = {
   getUsers,
   getUser,
-  createUser
+  createUser,
+  setUserInfo,
+  setAvatar
 };
