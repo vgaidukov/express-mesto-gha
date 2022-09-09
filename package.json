@@ -1,6 +1,5 @@
 {
-  "name": "Vadim Gaidukov",
-  "email": "vgaidukov@gmail.com",
+  "name": "express-mesto-gha",
   "author": "Vadim Gaidukov <vgaidukov@gmail.com>",
   "devDependencies": {
     "eslint": "^8.23.0",
