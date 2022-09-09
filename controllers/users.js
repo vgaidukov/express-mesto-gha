@@ -3,7 +3,7 @@ const User = require("../models/user");
 const getUsers = (req, res, next) => {
   User.find({})
     .then(users => {
-      res.send({ data: users })
+      res.send(users)
     })
     .catch(err => {
       next(err);
@@ -18,7 +18,7 @@ const getUser = (req, res, next) => {
         err.name = 'CastError';
         return Promise.reject(err);
       }
-      res.send({ data: user })
+      res.send(user)
     })
     .catch(err => {
       next(err);
@@ -48,7 +48,6 @@ const setUserInfo = (req, res, next) => {
         res.send(user);
       })
       .catch(err => {
-        console.log(err);
         next(err);
       });
   }
