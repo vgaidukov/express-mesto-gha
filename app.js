@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const routerUsers = require('./routes/users');
 const routerCards = require('./routes/cards');
 const { errorHandler } = require('./utils/errorHandler');
+const { castError } = require('./utils/errors.js');
 
 
 const { PORT = 3000 } = process.env;
@@ -23,9 +24,12 @@ app.use((req, res, next) => {
 
 app.use('/users', routerUsers);
 app.use('/cards', routerCards);
+
+app.use((res, req, next) => {
+  next(castError);
+});
+
 app.use(errorHandler);
-
-
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);

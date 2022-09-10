@@ -29,17 +29,6 @@ const getUser = (req, res, next) => {
       res.send(card)
     }
   )
-  // .then((user) => {
-  //   if (!user) {
-  //     const err = new Error();
-  //     err.name = 'CastError';
-  //     return Promise.reject(err);
-  //   }
-  //   res.send(user)
-  // })
-  // .catch(err => {
-  //   next(err);
-  // });
 };
 
 const createUser = (req, res, next) => {

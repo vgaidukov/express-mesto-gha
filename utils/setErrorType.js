@@ -7,7 +7,6 @@ const setErrorType = (err) => {
     return castError;
   } else {
     return defaultError;
-
   }
 }
 
