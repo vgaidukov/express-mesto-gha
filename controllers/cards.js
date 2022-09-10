@@ -1,7 +1,7 @@
 const Card = require("../models/card");
-const { validationError, castError, defaultError } = require('../utils/errors.js')
-const { checkIdValidity } = require('../utils/checkIdValidity.js')
-const { setErrorType } = require('../utils/setErrorType.js')
+const { validationError, castError, defaultError } = require('../utils/errors.js');
+const { checkIdValidity } = require('../utils/checkIdValidity.js');
+const { setErrorType } = require('../utils/setErrorType.js');
 
 const getCards = (req, res, next) => {
   Card.find({})

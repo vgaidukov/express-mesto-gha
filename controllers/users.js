@@ -1,4 +1,7 @@
 const User = require("../models/user");
+const { validationError, castError, defaultError } = require('../utils/errors.js');
+const { checkIdValidity } = require('../utils/checkIdValidity.js');
+const { setErrorType } = require('../utils/setErrorType.js');
 
 const getUsers = (req, res, next) => {
   User.find({})
@@ -6,23 +9,37 @@ const getUsers = (req, res, next) => {
       res.send(users)
     })
     .catch(err => {
-      next(err);
+      return next(setErrorType(err));
     });
 };
 
 const getUser = (req, res, next) => {
-  User.findById(req.params.userId)
-    .then((user) => {
-      if (!user) {
-        const err = new Error();
-        err.name = 'CastError';
-        return Promise.reject(err);
+  if (!checkIdValidity(req.params.cardId)) {
+    return next(validationError);
+  }
+  User.findById(
+    req.params.userId,
+    function (err, card) {
+      if (card == null) {
+        return next(castError);
       }
-      res.send(user)
-    })
-    .catch(err => {
-      next(err);
-    });
+      if (err) {
+        return next(defaultError);
+      }
+      res.send(card)
+    }
+  )
+  // .then((user) => {
+  //   if (!user) {
+  //     const err = new Error();
+  //     err.name = 'CastError';
+  //     return Promise.reject(err);
+  //   }
+  //   res.send(user)
+  // })
+  // .catch(err => {
+  //   next(err);
+  // });
 };
 
 const createUser = (req, res, next) => {
@@ -32,7 +49,7 @@ const createUser = (req, res, next) => {
       res.send(user);
     })
     .catch(err => {
-      next(err);
+      return next(setErrorType(err));
     });
 };
 
@@ -49,7 +66,7 @@ const setUserInfo = (req, res, next) => {
       res.send(user);
     })
     .catch(err => {
-      next(err);
+      return next(setErrorType(err));
     });
 };
 
@@ -66,7 +83,7 @@ const setAvatar = (req, res, next) => {
       res.send(user);
     })
     .catch(err => {
-      next(err);
+      return next(setErrorType(err));
     });
 };
 
