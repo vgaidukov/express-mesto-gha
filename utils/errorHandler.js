@@ -3,8 +3,9 @@
 // const INTERNAL_SERVER_ERROR = 500;
 
 const errorHandler = (err, req, res, next) => {
-  return res.status(err.statusCode).send({ message: err.message });
+  res.status(err.statusCode).send({ message: err.message });
 }
+
 module.exports = { errorHandler };
 
   //   if (err.name === 'ValidationError') {

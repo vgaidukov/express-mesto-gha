@@ -9,7 +9,7 @@ const getCards = (req, res, next) => {
       res.send(cards)
     })
     .catch(err => {
-      next(setErrorType(err));
+      return next(setErrorType(err));
     });
 };
 
@@ -25,7 +25,7 @@ const createCard = (req, res, next) => {
       res.send(card);
     })
     .catch(err => {
-      next(setErrorType(err));
+      return next(setErrorType(err));
     });
 };
 
