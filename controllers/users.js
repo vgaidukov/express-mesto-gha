@@ -14,7 +14,7 @@ const getUsers = (req, res, next) => {
 };
 
 const getUser = (req, res, next) => {
-  if (!checkIdValidity(req.params.cardId)) {
+  if (!checkIdValidity(req.params.userId)) {
     return next(validationError);
   }
   User.findById(
