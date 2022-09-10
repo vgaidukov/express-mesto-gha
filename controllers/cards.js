@@ -1,6 +1,7 @@
 const Card = require("../models/card");
 const { validationError, castError, defaultError } = require('../utils/errors.js')
 const { checkIdValidity } = require('../utils/checkIdValidity.js')
+const { setErrorType } = require('../utils/setErrorType.js')
 
 const getCards = (req, res, next) => {
   Card.find({})
@@ -8,7 +9,7 @@ const getCards = (req, res, next) => {
       res.send(cards)
     })
     .catch(err => {
-      next(err);
+      next(setErrorType(err));
     });
 };
 
@@ -24,7 +25,7 @@ const createCard = (req, res, next) => {
       res.send(card);
     })
     .catch(err => {
-      next(err);
+      next(setErrorType(err));
     });
 };
 
@@ -47,7 +48,7 @@ const deleteCard = (req, res, next) => {
 };
 
 const likeCard = (req, res, next) => {
-  if (req.params.cardId.length != validIdLenghth) {
+  if (!checkIdValidity(req.params.cardId)) {
     return next(validationError);
   }
   Card.findByIdAndUpdate(
@@ -67,7 +68,7 @@ const likeCard = (req, res, next) => {
 };
 
 const dislikeCard = (req, res, next) => {
-  if (req.params.cardId.length != validIdLenghth) {
+  if (!checkIdValidity(req.params.cardId)) {
     return next(validationError);
   }
   Card.findByIdAndUpdate(
