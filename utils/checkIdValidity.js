@@ -1,11 +1,10 @@
 const validIdLength = 24;
 
 const checkIdValidity = (id) => {
-  if (id.length != validIdLength) {
+  if (id.length !== validIdLength) {
     return false;
-  } else {
-    return true;
   }
-}
+  return true;
+};
 
 module.exports = { checkIdValidity };

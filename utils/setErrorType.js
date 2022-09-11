@@ -1,13 +1,15 @@
-const { validationError, castError, defaultError } = require('../utils/errors.js')
+const { validationError } = require('./errors/ValidationError');
+const { castError } = require('./errors/CastError');
+const { defaultError } = require('./errors/DefaultError');
 
 const setErrorType = (err) => {
-  if (err.name = 'ValidationError') {
+  if (err.name === 'ValidationError') {
     return validationError;
-  } else if (err.name = 'CastError') {
-    return castError;
-  } else {
-    return defaultError;
   }
-}
+  if (err.name === 'CastError') {
+    return castError;
+  }
+  return defaultError;
+};
 
 module.exports = { setErrorType };

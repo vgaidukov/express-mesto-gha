@@ -5,8 +5,7 @@ const bodyParser = require('body-parser');
 const routerUsers = require('./routes/users');
 const routerCards = require('./routes/cards');
 const { errorHandler } = require('./utils/errorHandler');
-const { castError } = require('./utils/errors.js');
-
+const { castError } = require('./utils/errors/CastError');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -17,7 +16,7 @@ app.use(bodyParser.json());
 
 app.use((req, res, next) => {
   req.user = {
-    _id: '631b0c26c6647dc29bd3a6e8'
+    _id: '631b0c26c6647dc29bd3a6e8',
   };
   next();
 });
@@ -31,6 +30,4 @@ app.use((res, req, next) => {
 
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-  console.log(`App listening on port ${PORT}`);
-});
+app.listen(PORT);

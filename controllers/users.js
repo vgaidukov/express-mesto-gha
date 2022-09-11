@@ -1,34 +1,36 @@
-const User = require("../models/user");
-const { validationError, castError, defaultError } = require('../utils/errors.js');
-const { checkIdValidity } = require('../utils/checkIdValidity.js');
-const { setErrorType } = require('../utils/setErrorType.js');
+const User = require('../models/user');
+const { validationError } = require('../utils/errors/ValidationError');
+const { castError } = require('../utils/errors/CastError');
+const { defaultError } = require('../utils/errors/DefaultError');
+const { checkIdValidity } = require('../utils/checkIdValidity');
+const { setErrorType } = require('../utils/setErrorType');
 
 const getUsers = (req, res, next) => {
   User.find({})
-    .then(users => {
-      res.send(users)
+    .then((users) => {
+      res.send(users);
     })
-    .catch(err => {
-      return next(setErrorType(err));
+    .catch((err) => {
+      next(setErrorType(err));
     });
 };
 
 const getUser = (req, res, next) => {
   if (!checkIdValidity(req.params.userId)) {
-    return next(validationError);
+    next(validationError);
   }
   User.findById(
     req.params.userId,
-    function (err, card) {
+    (err, card) => {
       if (card == null) {
-        return next(castError);
+        next(castError);
       }
       if (err) {
-        return next(defaultError);
+        next(defaultError);
       }
-      res.send(card)
-    }
-  )
+      res.send(card);
+    },
+  );
 };
 
 const createUser = (req, res, next) => {
@@ -37,8 +39,8 @@ const createUser = (req, res, next) => {
     .then((user) => {
       res.send(user);
     })
-    .catch(err => {
-      return next(setErrorType(err));
+    .catch((err) => {
+      next(setErrorType(err));
     });
 };
 
@@ -49,13 +51,14 @@ const setUserInfo = (req, res, next) => {
     { name, about },
     {
       new: true,
-      runValidators: true
-    })
+      runValidators: true,
+    },
+  )
     .then((user) => {
       res.send(user);
     })
-    .catch(err => {
-      return next(setErrorType(err));
+    .catch((err) => {
+      next(setErrorType(err));
     });
 };
 
@@ -66,13 +69,14 @@ const setAvatar = (req, res, next) => {
     { avatar },
     {
       new: true,
-      runValidators: true
-    })
+      runValidators: true,
+    },
+  )
     .then((user) => {
       res.send(user);
     })
-    .catch(err => {
-      return next(setErrorType(err));
+    .catch((err) => {
+      next(setErrorType(err));
     });
 };
 
@@ -81,5 +85,5 @@ module.exports = {
   getUser,
   createUser,
   setUserInfo,
-  setAvatar
+  setAvatar,
 };

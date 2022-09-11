@@ -1,15 +1,17 @@
-const Card = require("../models/card");
-const { validationError, castError, defaultError } = require('../utils/errors.js');
-const { checkIdValidity } = require('../utils/checkIdValidity.js');
-const { setErrorType } = require('../utils/setErrorType.js');
+const Card = require('../models/card');
+const { validationError } = require('../utils/errors/ValidationError');
+const { castError } = require('../utils/errors/CastError');
+const { defaultError } = require('../utils/errors/DefaultError');
+const { checkIdValidity } = require('../utils/checkIdValidity');
+const { setErrorType } = require('../utils/setErrorType');
 
 const getCards = (req, res, next) => {
   Card.find({})
-    .then(cards => {
-      res.send(cards)
+    .then((cards) => {
+      res.send(cards);
     })
-    .catch(err => {
-      return next(setErrorType(err));
+    .catch((err) => {
+      next(setErrorType(err));
     });
 };
 
@@ -19,72 +21,72 @@ const createCard = (req, res, next) => {
   Card.create({
     name,
     link,
-    owner
+    owner,
   })
     .then((card) => {
       res.send(card);
     })
-    .catch(err => {
-      return next(setErrorType(err));
+    .catch((err) => {
+      next(setErrorType(err));
     });
 };
 
 const deleteCard = (req, res, next) => {
   if (!checkIdValidity(req.params.cardId)) {
-    return next(validationError);
+    next(validationError);
   }
   Card.findByIdAndRemove(
     req.params.cardId,
-    function (err, card) {
-      if (card == null) {
-        return next(castError);
+    (err, card) => {
+      if (card === null) {
+        next(castError);
       }
       if (err) {
-        return next(defaultError);
+        next(defaultError);
       }
-      res.send(card)
-    }
-  )
+      res.send(card);
+    },
+  );
 };
 
 const likeCard = (req, res, next) => {
   if (!checkIdValidity(req.params.cardId)) {
-    return next(validationError);
+    next(validationError);
   }
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $addToSet: { likes: req.user._id } },
     { new: true },
-    function (err, card) {
+    (err, card) => {
       if (card == null) {
-        return next(castError);
+        next(castError);
       }
       if (err) {
-        return next(defaultError);
+        next(defaultError);
       }
-      res.send(card)
-    }
-  )
+      res.send(card);
+    },
+  );
 };
 
 const dislikeCard = (req, res, next) => {
   if (!checkIdValidity(req.params.cardId)) {
-    return next(validationError);
+    next(validationError);
   }
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: req.user._id } },
     { new: true },
-    function (err, card) {
+    (err, card) => {
       if (card == null) {
-        return next(castError);
+        next(castError);
       }
       if (err) {
-        return next(defaultError);
+        next(defaultError);
       }
-      res.send(card)
-    }
-  )
+      res.send(card);
+    },
+  );
 };
 
 module.exports = {
@@ -92,5 +94,5 @@ module.exports = {
   createCard,
   deleteCard,
   likeCard,
-  dislikeCard
+  dislikeCard,
 };
