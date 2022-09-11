@@ -8,7 +8,7 @@
     "nodemon": "^2.0.19"
   },
   "scripts": {
-    "lint": "npx eslint **/*.js --ignore-pattern node_modules/",
+    "lint": "npx eslint ./",
     "start": "node --inspect app.js",
     "dev": "nodemon app.js"
   },
