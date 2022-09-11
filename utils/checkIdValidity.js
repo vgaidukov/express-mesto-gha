@@ -1,7 +1,5 @@
-const validIdLength = 24;
-
 const checkIdValidity = (id) => {
-  if (id.length !== validIdLength) {
+  if (id.match(/^[0-9a-fA-F]{24}$/)) {
     return false;
   }
   return true;
