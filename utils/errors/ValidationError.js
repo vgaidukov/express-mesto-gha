@@ -3,9 +3,8 @@ class ValidationError extends Error {
     super(message);
     this.name = 'ValidationError';
     this.statusCode = 400;
+    this.message = 'Ошибка валидации, переданы некорректные данные';
   }
 }
 
-const validationError = new ValidationError('Ошибка валидации, переданы некорректные данные');
-
-module.exports = { validationError };
+module.exports = ValidationError;

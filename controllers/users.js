@@ -1,36 +1,30 @@
 const User = require('../models/user');
-const { validationError } = require('../utils/errors/ValidationError');
-const { castError } = require('../utils/errors/CastError');
-const { defaultError } = require('../utils/errors/DefaultError');
 const { checkIdValidity } = require('../utils/checkIdValidity');
 const { setErrorType } = require('../utils/setErrorType');
+
+const ValidationError = require('../utils/errors/ValidationError');
+const CastError = require('../utils/errors/CastError');
 
 const getUsers = (req, res, next) => {
   User.find({})
     .then((users) => {
       res.send(users);
     })
-    .catch((err) => {
-      next(setErrorType(err));
-    });
+    .catch(next);
 };
 
 const getUser = (req, res, next) => {
   if (!checkIdValidity(req.params.userId)) {
-    next(validationError);
+    throw new ValidationError();
   }
-  User.findById(
-    req.params.userId,
-    (err, card) => {
-      if (card == null) {
-        next(castError);
+  User.findById(req.params.userId)
+    .then((user) => {
+      if (!user) {
+        throw new CastError();
       }
-      if (err) {
-        next(defaultError);
-      }
-      res.send(card);
-    },
-  );
+      res.send(user);
+    })
+    .catch(next);
 };
 
 const createUser = (req, res, next) => {

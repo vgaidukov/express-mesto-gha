@@ -1,5 +1,15 @@
+const DefaultError = require('./errors/DefaultError');
+
 const errorHandler = (err, req, res, next) => {
-  res.status(err.statusCode).send({ message: err.message });
+  if (!err.statusCode) {
+    const e = new DefaultError();
+    res
+      .status(e.statusCode)
+      .send({ message: e.message });
+  }
+  res
+    .status(err.statusCode)
+    .send({ message: err.message });
   next();
 };
 
