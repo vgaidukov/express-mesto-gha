@@ -4,8 +4,9 @@ const bodyParser = require('body-parser');
 
 const routerUsers = require('./routes/users');
 const routerCards = require('./routes/cards');
+
 const { errorHandler } = require('./utils/errorHandler');
-// const { castError } = require('./utils/errors/CastError');
+const CastError = require('./utils/errors/CastError');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -24,9 +25,10 @@ app.use((req, res, next) => {
 app.use('/users', routerUsers);
 app.use('/cards', routerCards);
 
-// app.use((res, req, next) => {
-//   next(castError);
-// });
+app.use((res, req, next) => {
+  const err = new CastError();
+  next(err);
+});
 
 app.use(errorHandler);
 

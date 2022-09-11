@@ -1,8 +1,5 @@
 const Card = require('../models/card');
 
-// const { validationError } = require('../utils/errors/ValidationError');
-// const { castError } = require('../utils/errors/CastError');
-// const { defaultError } = require('../utils/errors/DefaultError');
 const ValidationError = require('../utils/errors/ValidationError');
 const CastError = require('../utils/errors/CastError');
 
