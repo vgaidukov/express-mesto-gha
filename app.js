@@ -4,12 +4,12 @@ const bodyParser = require('body-parser');
 
 const routerUsers = require('./routes/users');
 const routerCards = require('./routes/cards');
-const login = require('./controllers/users');
-const createUser = require('./controllers/users');
+const { login } = require('./controllers/users');
+const { createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 
 const { errorHandler } = require('./utils/errorHandler');
-const NotFoundError = require('./utils/errors/NotFoundError');
+const UnauthorizedError = require('./utils/errors/UnauthorizedError');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -34,7 +34,7 @@ app.use('/users', routerUsers);
 app.use('/cards', routerCards);
 
 app.use((res, req, next) => {
-  const err = new NotFoundError();
+  const err = new UnauthorizedError();
   next(err);
 });
 

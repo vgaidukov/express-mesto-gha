@@ -3,7 +3,7 @@ class UnauthorizedError extends Error {
     super(message);
     this.name = 'UnauthorizedError';
     this.statusCode = 401;
-    this.message = 'Неправильные почта или пароль';
+    this.message = 'Ошибка доступа. Неправильные почта или пароль';
   }
 }
 
