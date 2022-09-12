@@ -5,19 +5,19 @@ const ValidationError = require('../utils/errors/ValidationError');
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, 'Please feel in'],
     minlength: [2, 'Must be at least 2, got {VALUE}'],
     maxlength: [30, 'Must be not more then 30, got {VALUE}'],
+    default: 'Жак-Ив Кусто',
   },
   about: {
     type: String,
-    required: [true, 'Please feel in'],
     minlength: [2, 'Must be at least 2, got {VALUE}'],
     maxlength: [30, 'Must be not more then 30, got {VALUE}'],
+    default: 'Исследователь',
   },
   avatar: {
     type: String,
-    required: [true, 'Please feel in'],
+    default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
   },
   email: {
     type: String,
