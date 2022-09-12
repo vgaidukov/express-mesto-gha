@@ -81,6 +81,18 @@ const setUserInfo = (req, res, next) => {
     });
 };
 
+const getUserInfo = (req, res, next) => {
+  User.findById(req.user_id)
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError();
+      }
+
+      res.send(user);
+    })
+    .catch(next);
+};
+
 const setAvatar = (req, res, next) => {
   const { avatar } = req.body;
 
@@ -125,6 +137,7 @@ module.exports = {
   getUser,
   createUser,
   setUserInfo,
+  getUserInfo,
   setAvatar,
   login,
 };
