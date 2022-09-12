@@ -1,16 +1,9 @@
-const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 const { checkIdValidity } = require('../utils/checkIdValidity');
 const { setErrorType } = require('../utils/setErrorType');
 
 const ValidationError = require('../utils/errors/ValidationError');
 const CastError = require('../utils/errors/CastError');
-
-async function findByEmail(e) {
-  const isExist = await User.findOne({ email: e.email })
-    .then((user) => user);
-  return isExist;
-}
 
 const getUsers = (req, res, next) => {
   User.find({})
@@ -35,35 +28,14 @@ const getUser = (req, res, next) => {
 };
 
 const createUser = (req, res, next) => {
-  const {
-    name,
-    about,
-    avatar,
-    email,
-  } = req.body;
-  findByEmail({ email })
-    .then((isExist) => {
-      if (!isExist) {
-        bcrypt.hash(req.body.password, 10)
-          .then((hash) => User.create({
-            name,
-            about,
-            avatar,
-            email,
-            password: hash,
-          }))
-          .then((user) => {
-            res.send(user);
-          })
-          .catch((err) => {
-            next(setErrorType(err));
-          });
-      } else {
-        const validationError = new ValidationError();
-        next(validationError);
-      }
+  const { name, about, avatar } = req.body;
+  User.create({ name, about, avatar })
+    .then((user) => {
+      res.send(user);
     })
-    .catch(next);
+    .catch((err) => {
+      next(setErrorType(err));
+    });
 };
 
 const setUserInfo = (req, res, next) => {
