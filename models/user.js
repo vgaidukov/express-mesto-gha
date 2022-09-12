@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
-const ValidationError = require('../utils/errors/ValidationError');
+const bcrypt = require('bcryptjs');
+
+const BadRequestError = require('../utils/errors/BadRequestError');
+const UnauthorizedError = require('../utils/errors/UnauthorizedError');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -22,9 +25,9 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     validate: {
-      validator: (v) => {
-        if (!validator.isEmail(v)) {
-          throw new ValidationError();
+      validator: (email) => {
+        if (!validator.isEmail(email)) {
+          throw new BadRequestError();
         }
       },
       message: (props) => `${props.value} is not a valid email!`,
@@ -38,5 +41,22 @@ const userSchema = new mongoose.Schema({
     minlength: [8, 'Must be at least 8, got {VALUE}'],
   },
 });
+
+userSchema.statics.findUserByCredentials = (email, password) => {
+  this.findOne({ email })
+    .then((user) => {
+      if (!user) {
+        return Promise.reject(new UnauthorizedError());
+      }
+
+      return bcrypt.compare(password, user.password)
+        .then((matched) => {
+          if (!matched) {
+            return Promise.reject(new UnauthorizedError());
+          }
+          return user;
+        });
+    });
+};
 
 module.exports = mongoose.model('user', userSchema);

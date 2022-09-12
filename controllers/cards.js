@@ -1,7 +1,7 @@
 const Card = require('../models/card');
 
-const ValidationError = require('../utils/errors/ValidationError');
-const CastError = require('../utils/errors/CastError');
+const BadRequestError = require('../utils/errors/BadRequestError');
+const NotFoundError = require('../utils/errors/NotFoundError');
 
 const { checkIdValidity } = require('../utils/checkIdValidity');
 const { setErrorType } = require('../utils/setErrorType');
@@ -32,12 +32,12 @@ const createCard = (req, res, next) => {
 
 const deleteCard = (req, res, next) => {
   if (!checkIdValidity(req.params.cardId)) {
-    throw new ValidationError();
+    throw new BadRequestError();
   }
   Card.findByIdAndRemove(req.params.cardId)
     .then((card) => {
       if (!card) {
-        throw new CastError();
+        throw new NotFoundError();
       }
       res.send(card);
     })
@@ -46,7 +46,7 @@ const deleteCard = (req, res, next) => {
 
 const likeCard = (req, res, next) => {
   if (!checkIdValidity(req.params.cardId)) {
-    throw new ValidationError();
+    throw new BadRequestError();
   }
   Card.findByIdAndUpdate(
     req.params.cardId,
@@ -55,7 +55,7 @@ const likeCard = (req, res, next) => {
   )
     .then((card) => {
       if (!card) {
-        throw new CastError();
+        throw new NotFoundError();
       }
       res.send(card);
     })
@@ -64,7 +64,7 @@ const likeCard = (req, res, next) => {
 
 const dislikeCard = (req, res, next) => {
   if (!checkIdValidity(req.params.cardId)) {
-    throw new ValidationError();
+    throw new BadRequestError();
   }
   Card.findByIdAndUpdate(
     req.params.cardId,
@@ -73,7 +73,7 @@ const dislikeCard = (req, res, next) => {
   )
     .then((card) => {
       if (!card) {
-        throw new CastError();
+        throw new NotFoundError();
       }
       res.send(card);
     })

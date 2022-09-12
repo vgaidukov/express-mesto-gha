@@ -6,7 +6,7 @@ const routerUsers = require('./routes/users');
 const routerCards = require('./routes/cards');
 
 const { errorHandler } = require('./utils/errorHandler');
-const CastError = require('./utils/errors/CastError');
+const NotFoundError = require('./utils/errors/NotFoundError');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -26,7 +26,7 @@ app.use('/users', routerUsers);
 app.use('/cards', routerCards);
 
 app.use((res, req, next) => {
-  const err = new CastError();
+  const err = new NotFoundError();
   next(err);
 });
 

@@ -1,8 +1,8 @@
-const DefaultError = require('./errors/DefaultError');
+const InternalServerError = require('./errors/InternalServerError');
 
 const errorHandler = (err, req, res, next) => {
   if (!err.statusCode) {
-    const e = new DefaultError();
+    const e = new InternalServerError();
     res
       .status(e.statusCode)
       .send({ message: e.message });
