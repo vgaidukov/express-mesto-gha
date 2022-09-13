@@ -18,7 +18,7 @@ router.patch(
     body: Joi.object().keys({
       name: Joi.string().min(2).max(30),
       about: Joi.string().min(2).max(30),
-      avatar: Joi.string().uri(),
+      avatar: Joi.string().regex(/^https?:\/\/(www\.)?(\w?[-._~:/?#[\]@!$&'()*+,;=]?)+\.(\w?[-._~:/?#[\]@!$&'()*+,;=]?)+#{0,1}$/),
     }).unknown(true),
   }),
   setUserInfo,
@@ -29,7 +29,7 @@ router.patch(
     body: Joi.object().keys({
       name: Joi.string().min(2).max(30),
       about: Joi.string().min(2).max(30),
-      avatar: Joi.string().uri(),
+      avatar: Joi.string().regex(/^https?:\/\/(www\.)?(\w?[-._~:/?#[\]@!$&'()*+,;=]?)+\.(\w?[-._~:/?#[\]@!$&'()*+,;=]?)+#{0,1}$/),
     }).unknown(true),
   }),
   setAvatar,
