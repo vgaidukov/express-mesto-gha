@@ -1,6 +1,7 @@
 const BadRequestError = require('./errors/BadRequestError');
 const NotFoundError = require('./errors/NotFoundError');
 const UnauthorizedError = require('./errors/UnauthorizedError');
+const ConflictError = require('./errors/ConflictError');
 
 const setErrorType = (err) => {
   if (err.name === 'ValidationError') {
@@ -11,6 +12,9 @@ const setErrorType = (err) => {
   }
   if (err.name === 'UnauthorizedError') {
     return new UnauthorizedError();
+  }
+  if (err.name === 'ConflictError') {
+    return new ConflictError();
   }
   return err;
 };
