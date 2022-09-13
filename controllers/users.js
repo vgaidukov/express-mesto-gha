@@ -18,11 +18,10 @@ const getUsers = (req, res, next) => {
 };
 
 const getUser = (req, res, next) => {
-  if (!checkIdValidity(req.params.userId)) {
-    throw new BadRequestError();
-  }
-
-  User.findById(req.params.userId)
+  // if (!checkIdValidity(req.params.userId)) {
+  //   throw new BadRequestError();
+  // }
+  User.findById(req.user._id)
     .then((user) => {
       if (!user) {
         throw new NotFoundError();
@@ -84,17 +83,18 @@ const setUserInfo = (req, res, next) => {
     });
 };
 
-const getUserInfo = (req, res, next) => {
-  User.findById(req.user_id)
-    .then((user) => {
-      if (!user) {
-        throw new NotFoundError();
-      }
+// const getUserInfo = (req, res, next) => {
+//   console.log(1);
+//   User.findById(req.user_id)
+//     .then((user) => {
+//       if (!user) {
+//         throw new NotFoundError();
+//       }
 
-      res.send(user);
-    })
-    .catch(next);
-};
+//       res.send(user);
+//     })
+//     .catch(next);
+// };
 
 const setAvatar = (req, res, next) => {
   const { avatar } = req.body;
@@ -129,8 +129,8 @@ const login = (req, res, next) => {
           maxAge: 3600000,
           httpOnly: true,
         })
-        .end();
-      res.send(user);
+        .send(user);
+      // .end();
     })
     .catch(next);
 };
@@ -140,7 +140,7 @@ module.exports = {
   getUser,
   createUser,
   setUserInfo,
-  getUserInfo,
+  // getUserInfo,
   setAvatar,
   login,
 };

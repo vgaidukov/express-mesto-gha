@@ -3,14 +3,14 @@ const {
   getUsers,
   getUser,
   setUserInfo,
-  getUserInfo,
+  // getUserInfo,
   setAvatar,
 } = require('../controllers/users');
 
 router.get('/', getUsers);
-router.get('/:userId', getUser);
+router.get('/me', getUser);
+// router.get('/:userId', getUser);
 router.patch('/me', setUserInfo);
-router.get('/me', getUserInfo);
 router.patch('/me/avatar', setAvatar);
 
 module.exports = router;
