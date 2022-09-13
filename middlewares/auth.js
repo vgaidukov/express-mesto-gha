@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const UnauthorizedError = require('../utils/errors/UnauthorizedError');
 
-const auth = (req, res) => {
+const auth = (req, res, next) => {
   // const { authorization } = req.headers;
 
   if (!req.cookies.jwt) {
@@ -25,8 +25,7 @@ const auth = (req, res) => {
   }
 
   req.user = payload; // записываем пейлоуд в объект запроса
-  res.send({ message: 'Success' });
-  // next(); // пропускаем запрос дальше
+  next(); // пропускаем запрос дальше
 };
 
 module.exports = auth;

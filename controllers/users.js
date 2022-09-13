@@ -130,6 +130,7 @@ const login = (req, res, next) => {
           httpOnly: true,
         })
         .end();
+      res.send(user);
     })
     .catch(next);
 };
