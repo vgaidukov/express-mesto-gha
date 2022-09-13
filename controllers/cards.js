@@ -36,7 +36,7 @@ const deleteCard = (req, res, next) => {
   if (!checkIdValidity(req.params.cardId)) {
     throw new BadRequestError();
   }
-  if (req.body.owner === req.user._id) {
+  if (req.body.owner !== req.user._id) {
     throw new ForbiddenError();
   }
 
