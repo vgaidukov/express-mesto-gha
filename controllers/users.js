@@ -45,7 +45,10 @@ const createUser = (req, res, next) => {
     password,
   } = req.body;
 
-  User.findOne({ email }) //
+  // The unique Option is Not a Validator.
+  // Без этой проверки дубликаты создаются даже при unique: true
+
+  User.findOne({ email })
     .then((user) => {
       if (user) {
         return Promise.reject(new ConflictError());
