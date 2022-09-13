@@ -10,7 +10,6 @@ const NotFoundError = require('../utils/errors/NotFoundError');
 const ConflictError = require('../utils/errors/ConflictError');
 
 const getUsers = (req, res, next) => {
-  console.log(req.user._id);
   User.find({})
     .then((users) => {
       res.send(users);
