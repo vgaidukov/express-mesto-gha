@@ -38,6 +38,7 @@ const createUser = (req, res, next) => {
     about,
     avatar,
     email,
+    password,
   } = req.body;
 
   User.findOne({ email })
@@ -46,7 +47,7 @@ const createUser = (req, res, next) => {
         return Promise.reject(new BadRequestError());
       }
 
-      return bcrypt.hash(req.body.password, 10);
+      return bcrypt.hash(password, 10);
     })
     .then((hash) => User.create({
       name,
