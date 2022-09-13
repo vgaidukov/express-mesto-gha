@@ -40,9 +40,9 @@ const deleteCard = (req, res, next) => {
       if (!card) {
         throw new NotFoundError();
       }
-      if (req.params.cardId !== req.user._id) {
-        throw new UnauthorizedError();
-      }
+      // if (req.params.cardId !== req.user._id) {
+      //   throw new UnauthorizedError();
+      // }
 
       res.send(card);
     })
