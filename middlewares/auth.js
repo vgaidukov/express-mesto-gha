@@ -1,19 +1,18 @@
-// middlewares/auth.js
-
 const jwt = require('jsonwebtoken');
+
 const UnauthorizedError = require('../utils/errors/UnauthorizedError');
 
-const auth = (req, res, next) => {
-  const { authorization } = req.headers;
+const auth = (req, res) => {
+  // const { authorization } = req.headers;
 
-  if (!authorization || !authorization.startsWith('Bearer ')) {
+  if (!req.cookies.jwt) {
     throw new UnauthorizedError();
     // return res
     //   .status(401)
     //   .send({ message: 'Необходима авторизация' });
   }
 
-  const token = authorization.replace('Bearer ', '');
+  const token = req.cookies.jwt;
   let payload;
 
   try {
@@ -26,8 +25,8 @@ const auth = (req, res, next) => {
   }
 
   req.user = payload; // записываем пейлоуд в объект запроса
-
-  next(); // пропускаем запрос дальше
+  res.send({ message: 'Success' });
+  // next(); // пропускаем запрос дальше
 };
 
 module.exports = auth;

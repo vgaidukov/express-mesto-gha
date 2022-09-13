@@ -7,6 +7,7 @@ const { setErrorType } = require('../utils/setErrorType');
 
 const BadRequestError = require('../utils/errors/BadRequestError');
 const NotFoundError = require('../utils/errors/NotFoundError');
+const ConflictError = require('../utils/errors/ConflictError');
 
 const getUsers = (req, res, next) => {
   User.find({})
@@ -44,7 +45,7 @@ const createUser = (req, res, next) => {
   User.findOne({ email })
     .then((user) => {
       if (user) {
-        return Promise.reject(new BadRequestError());
+        return Promise.reject(new ConflictError());
       }
 
       return bcrypt.hash(password, 10);

@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+
 const { celebrate, Joi } = require('celebrate');
 const { errors } = require('celebrate');
 
@@ -19,6 +21,7 @@ const app = express();
 mongoose.connect('mongodb://localhost:27017/mestodb');
 
 app.use(bodyParser.json());
+app.use(cookieParser()); // подключаем парсер кук как мидлвэр
 
 app.post(
   '/signin',
