@@ -1,9 +1,11 @@
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const { checkIdValidity } = require('../utils/checkIdValidity');
 const { setErrorType } = require('../utils/setErrorType');
 
-const ValidationError = require('../utils/errors/ValidationError');
-const CastError = require('../utils/errors/CastError');
+const BadRequestError = require('../utils/errors/BadRequestError');
+const NotFoundError = require('../utils/errors/NotFoundError');
 
 const getUsers = (req, res, next) => {
   User.find({})
@@ -15,21 +17,43 @@ const getUsers = (req, res, next) => {
 
 const getUser = (req, res, next) => {
   if (!checkIdValidity(req.params.userId)) {
-    throw new ValidationError();
+    throw new BadRequestError();
   }
+
   User.findById(req.params.userId)
     .then((user) => {
       if (!user) {
-        throw new CastError();
+        throw new NotFoundError();
       }
+
       res.send(user);
     })
     .catch(next);
 };
 
 const createUser = (req, res, next) => {
-  const { name, about, avatar } = req.body;
-  User.create({ name, about, avatar })
+  const {
+    name,
+    about,
+    avatar,
+    email,
+  } = req.body;
+
+  User.findOne({ email })
+    .then((user) => {
+      if (user) {
+        return Promise.reject(new BadRequestError());
+      }
+
+      return bcrypt.hash(req.body.password, 10);
+    })
+    .then((hash) => User.create({
+      name,
+      about,
+      avatar,
+      email,
+      password: hash,
+    }))
     .then((user) => {
       res.send(user);
     })
@@ -40,6 +64,7 @@ const createUser = (req, res, next) => {
 
 const setUserInfo = (req, res, next) => {
   const { name, about } = req.body;
+
   User.findByIdAndUpdate(
     req.user._id,
     { name, about },
@@ -56,8 +81,21 @@ const setUserInfo = (req, res, next) => {
     });
 };
 
+const getUserInfo = (req, res, next) => {
+  User.findById(req.user_id)
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError();
+      }
+
+      res.send(user);
+    })
+    .catch(next);
+};
+
 const setAvatar = (req, res, next) => {
   const { avatar } = req.body;
+
   User.findByIdAndUpdate(
     req.user._id,
     { avatar },
@@ -74,10 +112,31 @@ const setAvatar = (req, res, next) => {
     });
 };
 
+const login = (req, res, next) => {
+  const { email, password } = req.body;
+  return User.findUserByCredentials(email, password)
+    .then((user) => {
+      const token = jwt.sign(
+        { _id: user._id },
+        'very-secret-key',
+        { expiresIn: '1w' },
+      );
+      res
+        .cookie('jwt', token, {
+          maxAge: 3600000,
+          httpOnly: true,
+        })
+        .end();
+    })
+    .catch(next);
+};
+
 module.exports = {
   getUsers,
   getUser,
   createUser,
   setUserInfo,
+  getUserInfo,
   setAvatar,
+  login,
 };

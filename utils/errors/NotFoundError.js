@@ -1,4 +1,4 @@
-class CastError extends Error {
+class NotFoundError extends Error {
   constructor(message) {
     super(message);
     this.name = 'CastError';
@@ -7,4 +7,4 @@ class CastError extends Error {
   }
 }
 
-module.exports = CastError;
+module.exports = NotFoundError;
