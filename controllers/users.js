@@ -5,10 +5,8 @@ const { Joi } = require('celebrate');
 Joi.objectId = require('joi-objectid')(Joi);
 
 const User = require('../models/user');
-// const { checkIdValidity } = require('../utils/checkIdValidity');
 const { setErrorType } = require('../utils/setErrorType');
 
-// const BadRequestError = require('../utils/errors/BadRequestError');
 const NotFoundError = require('../utils/errors/NotFoundError');
 const ConflictError = require('../utils/errors/ConflictError');
 
@@ -21,10 +19,6 @@ const getUsers = (req, res, next) => {
 };
 
 const getUser = (req, res, next) => {
-  // if (!checkIdValidity(req.params.userId)) {
-  //   throw new BadRequestError();
-  // }
-
   User.findById(req.params.userId)
     .then((user) => {
       if (!user) {
@@ -123,6 +117,7 @@ const setAvatar = (req, res, next) => {
 
 const login = (req, res, next) => {
   const { email, password } = req.body;
+
   return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign(
@@ -130,13 +125,13 @@ const login = (req, res, next) => {
         'very-secret-key',
         { expiresIn: '1w' },
       );
+
       res
         .cookie('jwt', token, {
           maxAge: 3600000,
           httpOnly: true,
         })
         .send(user);
-      // .end();
     })
     .catch(next);
 };
