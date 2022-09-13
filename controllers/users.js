@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const { celebrate, Joi } = require('celebrate');
+const { Joi } = require('celebrate');
 Joi.objectId = require('joi-objectid')(Joi);
 
 const User = require('../models/user');
@@ -24,7 +24,6 @@ const getUser = (req, res, next) => {
   // if (!checkIdValidity(req.params.userId)) {
   //   throw new BadRequestError();
   // }
-  req.params.userId = Joi.objectId();
 
   User.findById(req.params.userId)
     .then((user) => {

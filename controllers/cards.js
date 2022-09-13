@@ -33,6 +33,7 @@ const createCard = (req, res, next) => {
 };
 
 const deleteCard = (req, res, next) => {
+  console.log(req.params.cardId);
   // if (!checkIdValidity(req.params.cardId)) {
   //   throw new BadRequestError();
   // }
@@ -42,12 +43,8 @@ const deleteCard = (req, res, next) => {
   // if (req.body.owner !== req.user._id) {
   //   throw new ForbiddenError();
   // }
-
   Card.findById(req.params.cardId)
     .then((card) => {
-      console.log(1, card.owner.toString());
-      console.log(2, req.user._id);
-
       if (!card) {
         throw new NotFoundError();
       }
