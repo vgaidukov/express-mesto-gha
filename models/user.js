@@ -39,11 +39,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please feel in'],
     minlength: [8, 'Must be at least 8, got {VALUE}'],
+    select: false,
   },
 });
 
-userSchema.statics.findUserByCredentials = (email, password) => {
-  this.findOne({ email })
+userSchema.statics.findUserByCredentials = function (email, password) {
+  return this.findOne({ email }).select('+password')
     .then((user) => {
       if (!user) {
         return Promise.reject(new UnauthorizedError());

@@ -39,7 +39,7 @@ const createUser = (req, res, next) => {
     email,
   } = req.body;
 
-  return User.findOne({ email })
+  User.findOne({ email })
     .then((user) => {
       if (user) {
         return Promise.reject(new BadRequestError());
@@ -114,7 +114,6 @@ const setAvatar = (req, res, next) => {
 
 const login = (req, res, next) => {
   const { email, password } = req.body;
-
   return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign(

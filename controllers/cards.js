@@ -2,6 +2,7 @@ const Card = require('../models/card');
 
 const BadRequestError = require('../utils/errors/BadRequestError');
 const NotFoundError = require('../utils/errors/NotFoundError');
+const UnauthorizedError = require('../utils/errors/UnauthorizedError');
 
 const { checkIdValidity } = require('../utils/checkIdValidity');
 const { setErrorType } = require('../utils/setErrorType');
@@ -39,6 +40,10 @@ const deleteCard = (req, res, next) => {
       if (!card) {
         throw new NotFoundError();
       }
+      if (req.params.cardId !== req.user._id) {
+        throw new UnauthorizedError();
+      }
+
       res.send(card);
     })
     .catch(next);
