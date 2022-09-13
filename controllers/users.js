@@ -42,15 +42,14 @@ const createUser = (req, res, next) => {
     password,
   } = req.body;
 
-  bcrypt.hash(password, 10)
-    // User.findOne({ email }) //
-    //   .then((user) => {
-    //     if (user) {
-    //       return Promise.reject(new ConflictError());
-    //     }
+  User.findOne({ email }) //
+    .then((user) => {
+      if (user) {
+        return Promise.reject(new ConflictError());
+      }
 
-    //     return bcrypt.hash(password, 10);
-    //   })
+      return bcrypt.hash(password, 10);
+    })
     .then((hash) => User.create({
       name,
       about,

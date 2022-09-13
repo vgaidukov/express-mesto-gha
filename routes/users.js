@@ -9,6 +9,8 @@ const {
   setAvatar,
 } = require('../controllers/users');
 
+const { urlPattern } = require('../utils/constants');
+
 router.get('/', getUsers);
 router.get('/me', getUserInfo);
 router.get('/:userId', getUser);
@@ -18,7 +20,7 @@ router.patch(
     body: Joi.object().keys({
       name: Joi.string().min(2).max(30),
       about: Joi.string().min(2).max(30),
-      avatar: Joi.string().regex(/^https?:\/\/(www\.)?(\w?[-._~:/?#[\]@!$&'()*+,;=]?)+\.(\w?[-._~:/?#[\]@!$&'()*+,;=]?)+#{0,1}$/),
+      avatar: Joi.string().regex(urlPattern),
     }).unknown(true),
   }),
   setUserInfo,
@@ -29,7 +31,7 @@ router.patch(
     body: Joi.object().keys({
       name: Joi.string().min(2).max(30),
       about: Joi.string().min(2).max(30),
-      avatar: Joi.string().regex(/^https?:\/\/(www\.)?(\w?[-._~:/?#[\]@!$&'()*+,;=]?)+\.(\w?[-._~:/?#[\]@!$&'()*+,;=]?)+#{0,1}$/),
+      avatar: Joi.string().regex(urlPattern),
     }).unknown(true),
   }),
   setAvatar,

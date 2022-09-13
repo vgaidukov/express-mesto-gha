@@ -12,6 +12,8 @@ const { login } = require('./controllers/users');
 const { createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 
+const { urlPattern } = require('./utils/constants');
+
 const { errorHandler } = require('./utils/errorHandler');
 const NotFoundError = require('./utils/errors/NotFoundError');
 
@@ -42,7 +44,7 @@ app.post(
       password: Joi.string().required().min(8),
       name: Joi.string().min(2).max(30),
       about: Joi.string().min(2).max(30),
-      avatar: Joi.string().uri(),
+      avatar: Joi.string().regex(urlPattern),
     }).unknown(true),
   }),
   createUser,
