@@ -12,6 +12,7 @@ const {
 const { urlPattern } = require('../utils/constants');
 
 router.get('/', getCards);
+
 router.post(
   '/',
   celebrate({
@@ -22,6 +23,7 @@ router.post(
   }),
   createCard,
 );
+
 router.delete(
   '/:cardId',
   celebrate({
@@ -31,7 +33,25 @@ router.delete(
   }),
   deleteCard,
 );
-router.put('/:cardId/likes', likeCard);
-router.delete('/:cardId/likes', dislikeCard);
+
+router.put(
+  '/:cardId/likes',
+  celebrate({
+    params: Joi.object().keys({
+      cardId: Joi.objectId().required(),
+    }),
+  }),
+  likeCard,
+);
+
+router.delete(
+  '/:cardId/likes',
+  celebrate({
+    params: Joi.object().keys({
+      cardId: Joi.objectId().required(),
+    }),
+  }),
+  dislikeCard,
+);
 
 module.exports = router;
