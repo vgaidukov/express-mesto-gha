@@ -13,7 +13,7 @@ const { createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 
 const { errorHandler } = require('./utils/errorHandler');
-const UnauthorizedError = require('./utils/errors/UnauthorizedError');
+const NotFoundError = require('./utils/errors/NotFoundError');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -54,7 +54,7 @@ app.use('/users', routerUsers);
 app.use('/cards', routerCards);
 
 app.use((res, req, next) => {
-  const err = new UnauthorizedError();
+  const err = new NotFoundError();
   next(err);
 });
 
