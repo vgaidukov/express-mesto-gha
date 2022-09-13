@@ -1,11 +1,14 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+const { celebrate, Joi } = require('celebrate');
+Joi.objectId = require('joi-objectid')(Joi);
+
 const User = require('../models/user');
-const { checkIdValidity } = require('../utils/checkIdValidity');
+// const { checkIdValidity } = require('../utils/checkIdValidity');
 const { setErrorType } = require('../utils/setErrorType');
 
-const BadRequestError = require('../utils/errors/BadRequestError');
+// const BadRequestError = require('../utils/errors/BadRequestError');
 const NotFoundError = require('../utils/errors/NotFoundError');
 const ConflictError = require('../utils/errors/ConflictError');
 
@@ -18,9 +21,10 @@ const getUsers = (req, res, next) => {
 };
 
 const getUser = (req, res, next) => {
-  if (!checkIdValidity(req.params.userId)) {
-    throw new BadRequestError();
-  }
+  // if (!checkIdValidity(req.params.userId)) {
+  //   throw new BadRequestError();
+  // }
+  req.params.userId = Joi.objectId();
 
   User.findById(req.params.userId)
     .then((user) => {
