@@ -42,7 +42,7 @@ const deleteCard = (req, res, next) => {
 
       return card;
     })
-    .then((card) => Card.remove(card))
+    .then((card) => Card.deleteOne(card))
 
     .then((card) => res.send(card))
 

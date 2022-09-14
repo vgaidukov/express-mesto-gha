@@ -16,6 +16,9 @@ const setErrorType = (err) => {
   if (err.name === 'ConflictError') {
     return new ConflictError();
   }
+  if (err.code === 11000) {
+    return new ConflictError();
+  }
   return err;
 };
 

@@ -8,7 +8,7 @@ const User = require('../models/user');
 const { setErrorType } = require('../utils/setErrorType');
 
 const NotFoundError = require('../utils/errors/NotFoundError');
-const ConflictError = require('../utils/errors/ConflictError');
+// const ConflictError = require('../utils/errors/ConflictError');
 
 const getUsers = (req, res, next) => {
   User.find({})
@@ -42,14 +42,15 @@ const createUser = (req, res, next) => {
   // The unique Option is Not a Validator.
   // Без этой проверки дубликаты создаются даже при unique: true
 
-  User.findOne({ email })
-    .then((user) => {
-      if (user) {
-        return Promise.reject(new ConflictError());
-      }
+  // User.findOne({ email })
+  //   .then((user) => {
+  //     if (user) {
+  //       return Promise.reject(new ConflictError());
+  //     }
 
-      return bcrypt.hash(password, 10);
-    })
+  //     return bcrypt.hash(password, 10);
+  //   })
+  bcrypt.hash(password, 10)
     .then((hash) => User.create({
       name,
       about,
@@ -58,7 +59,7 @@ const createUser = (req, res, next) => {
       password: hash,
     }))
     .then((user) => {
-      res.send(user);
+      res.send(user.toObject());
     })
     .catch((err) => {
       next(setErrorType(err));
@@ -131,7 +132,7 @@ const login = (req, res, next) => {
           maxAge: 3600000,
           httpOnly: true,
         })
-        .send(user);
+        .send(user.toObject());
     })
     .catch(next);
 };
