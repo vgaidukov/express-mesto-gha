@@ -8,7 +8,6 @@ const User = require('../models/user');
 const { setErrorType } = require('../utils/setErrorType');
 
 const NotFoundError = require('../utils/errors/NotFoundError');
-// const ConflictError = require('../utils/errors/ConflictError');
 
 const getUsers = (req, res, next) => {
   User.find({})
@@ -39,17 +38,6 @@ const createUser = (req, res, next) => {
     password,
   } = req.body;
 
-  // The unique Option is Not a Validator.
-  // Без этой проверки дубликаты создаются даже при unique: true
-
-  // User.findOne({ email })
-  //   .then((user) => {
-  //     if (user) {
-  //       return Promise.reject(new ConflictError());
-  //     }
-
-  //     return bcrypt.hash(password, 10);
-  //   })
   bcrypt.hash(password, 10)
     .then((hash) => User.create({
       name,
